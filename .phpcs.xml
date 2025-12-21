@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<ruleset name="project_urlname">
+	<description>Coding standards for project_urlname</description>
+
+	<file>.</file>
+	<arg name="basepath" value="./"/><!-- Strip the file paths down to the relevant bit -->
+
+	<!-- Rules: figuren.theater Coding Standards -->
+	<rule ref="figurentheater" />
+
+</ruleset>
