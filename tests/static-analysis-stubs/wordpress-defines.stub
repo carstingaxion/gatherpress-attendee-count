@@ -37,8 +37,8 @@ define( 'ARRAY_N', 'ARRAY_N' );
 define( 'STYLESHEETPATH', '/app/themes/child/' );
 define( 'TEMPLATEPATH', '/app/themes/parent/' );
 
-// project_name plugin.
-define( 'project_name_VERSION', '0.1.0-alpha' );
-define( 'project_name_PLUGIN_FILE', '/app/project_urlname/plugin.php' );
-define( 'project_name_PLUGIN_DIR', '/app/project_urlname' );
-define( 'project_name_PLUGIN_URL', 'https://example.com/wp-content/plugins/project_urlname/' );
+// gatherpress_attendee_count plugin.
+define( 'gatherpress_attendee_count_VERSION', '0.1.0-alpha' );
+define( 'gatherpress_attendee_count_PLUGIN_FILE', '/app/gatherpress-attendee-count/plugin.php' );
+define( 'gatherpress_attendee_count_PLUGIN_DIR', '/app/gatherpress-attendee-count' );
+define( 'gatherpress_attendee_count_PLUGIN_URL', 'https://example.com/wp-content/plugins/gatherpress-attendee-count/' );

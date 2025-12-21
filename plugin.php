@@ -1,15 +1,15 @@
 <?php
 /**
- * Register the project_urlname module to altis
+ * Register the gatherpress-attendee-count module to altis
  *
- * @package           figuren-theater/project_urlname
+ * @package           figuren-theater/gatherpress-attendee-count
  * @author            figuren.theater
  * @copyright         2023 figuren.theater
  * @license           GPL-3.0+
  *
  * @wordpress-plugin
- * Plugin Name:       figuren.theater | project_name
- * Plugin URI:        https://github.com/figuren-theater/project_urlname
+ * Plugin Name:       figuren.theater | gatherpress_attendee_count
+ * Plugin URI:        https://github.com/figuren-theater/gatherpress-attendee-count
  * Description:       ... like the figuren.theater WordPress Multisite network.
  * Version:           0.1.0-alpha
  * Requires at least: 6.0
@@ -20,10 +20,10 @@
  * Domain Path:       /languages
  * License:           GPL-3.0+
  * License URI:       http://www.gnu.org/licenses/gpl-3.0.txt
- * Update URI:        https://github.com/figuren-theater/project_urlname
+ * Update URI:        https://github.com/figuren-theater/gatherpress-attendee-count
  */
 
-namespace Figuren_Theater\project_name;
+namespace Figuren_Theater\gatherpress_attendee_count;
 
 const DIRECTORY = __DIR__;
 

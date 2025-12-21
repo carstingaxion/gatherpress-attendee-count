@@ -1,11 +1,11 @@
 <?php
 /**
- * Figuren_Theater project_name.
+ * Figuren_Theater gatherpress_attendee_count.
  *
- * @package figuren-theater/project_urlname
+ * @package figuren-theater/gatherpress-attendee-count
  */
 
-namespace Figuren_Theater\project_name;
+namespace Figuren_Theater\gatherpress_attendee_count;
 
 use Altis;
 
@@ -24,9 +24,9 @@ function register() :void {
 	];
 
 	Altis\register_module(
-		'project_urlname',
+		'gatherpress-attendee-count',
 		DIRECTORY,
-		'project_name',
+		'gatherpress_attendee_count',
 		$options,
 		__NAMESPACE__ . '\\bootstrap'
 	);

@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests for project_name Documentation module.
+ * Tests for gatherpress_attendee_count Documentation module.
  *
  * phpcs:disable WordPress.Files, WordPress.NamingConventions, PSR1.Classes.ClassDeclaration.MissingNamespace, HM.Functions.NamespacedFunctions
  */

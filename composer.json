@@ -1,5 +1,5 @@
 {
-    "name": "figuren-theater/project_urlname",
+    "name": "figuren-theater/gatherpress-attendee-count",
     "description": "... like the figuren.theater WordPress Multisite network.",
     "license": "GPL-3.0+",
     "type": "wordpress-muplugin",
@@ -23,8 +23,8 @@
     "homepage": "https://websites.fuer.figuren.theater",
     "support": {
         "email": "info@figuren.theater",
-        "issues": "https://github.com/figuren-theater/project_urlname/issues",
-        "source": "https://github.com/figuren-theater/project_urlname"
+        "issues": "https://github.com/figuren-theater/gatherpress-attendee-count/issues",
+        "source": "https://github.com/figuren-theater/gatherpress-attendee-count"
     },
     "require-dev": {
         "figuren-theater/code-quality": "*"
