@@ -129,9 +129,10 @@ function gatherpress_attendee_count_get_events() {
 		'gatherpress_event_query' => 'past',
 		'posts_per_page' => 100,
 		'post_status'    => array( 'publish' ),
-		'orderby'        => 'meta_value',
-		'meta_key'       => 'gatherpress_datetime_start',
-		'order'          => 'ASC',
+		'orderby'        => 'event_date',
+		// 'orderby'        => 'meta_value',
+		// 'meta_key'       => 'gatherpress_datetime_start',
+		'order'          => 'DESC',
 		'meta_query'     => array(
 			'relation' => 'AND',
 			array(
@@ -178,22 +179,46 @@ function gatherpress_attendee_count_render_dashboard_widget() {
 		echo '<div id="gatherpress-events-list" class="activity-block">';
 		echo '<ul>';
 
+		// $today    = current_time( 'Y-m-d' );
+		// $yesterday = current_datetime()->modify( '-1 day' )->format( 'Y-m-d' );
+		// $year     = current_time( 'Y' );
+
+		// $time = get_the_time( 'U' );
+
+		// if ( gmdate( 'Y-m-d', $time ) === $today ) {
+		// 	$relative = __( 'Today' );
+		// } elseif ( gmdate( 'Y-m-d', $time ) === $yesterday ) {
+		// 	$relative = __( 'Yesterday' );
+		// } elseif ( gmdate( 'Y', $time ) !== $year ) {
+		// 	/* translators: Date and time format for recent posts on the dashboard, from a different calendar year, see https://www.php.net/manual/datetime.format.php */
+		// 	$relative = date_i18n( __( 'M jS Y' ), $time );
+		// } else {
+		// 	/* translators: Date and time format for recent posts on the dashboard, see https://www.php.net/manual/datetime.format.php */
+		// 	$relative = date_i18n( __( 'M jS' ), $time );
+		// }
+
 		while ( $query->have_posts() ) {
 			$query->the_post();
 			$event_id = get_the_ID();
 			$edit_link = get_edit_post_link( $event_id );
-			
+
 			// Get event datetime from GatherPress meta
 			$gatherpress_datetime = get_post_meta( $event_id, 'gatherpress_datetime_start', true );
 			if ( ! empty( $gatherpress_datetime ) ) {
 				$event_datetime = strtotime( $gatherpress_datetime );
-				$event_date = date_i18n( 'j. M, ' . get_option( 'time_format' ), $event_datetime );
+				// $event_date = date_i18n( 'j. M, ' . get_option( 'time_format' ), $event_datetime );
 			} else {
 				// Fallback to post date if GatherPress meta doesn't exist
 				$event_datetime = get_the_date( 'U', $event_id );
-				$event_date = date_i18n( 'd. M, H:i', $event_datetime );
+				// $event_date = date_i18n( 'd. M, H:i', $event_datetime );
 			}
-			
+			$event_date = sprintf(
+				// _x( '%1$s ago', '%2$s = human-readable time difference', 'wpdocs_textdomain' ),
+				_x( 'vor %1$s', '%2$s = human-readable time difference', 'wpdocs_textdomain' ),
+				human_time_diff( $event_datetime, current_time( 'timestamp' ) )
+			);
+
+
 			// Get venue from taxonomy
 			$venue_terms = get_the_terms( $event_id, '_gatherpress_venue' );
 			$venue_name = '';
