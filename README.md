@@ -9,6 +9,8 @@
 
 Monitor GatherPress events with missing attendee counts directly from your WordPress dashboard.
 
+[![Playground Demo Link](https://img.shields.io/badge/WordPress_Playground-blue?logo=wordpress&logoColor=%23fff&labelColor=%233858e9&color=%233858e9)](https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/carstingaxion/gatherpress-attendee-count/main/.wordpress-org/blueprints/blueprint.json)
+
 ---
 
 ## Description
