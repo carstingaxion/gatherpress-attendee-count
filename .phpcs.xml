@@ -7,5 +7,31 @@
 
 	<!-- Rules: figuren.theater Coding Standards -->
 	<rule ref="figurentheater" />
+	<!-- Allow additional text_domains -->
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="gatherpress-attendee-count"/>
+				<element value="default"/>
+			</property>
+		</properties>
+	</rule>
 
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="gatherpress"/>
+				<element value="__NAMESPACE__"/>
+			</property>
+
+		</properties>
+	</rule> 
+	<rule ref="WordPress">
+		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
+	</rule>
+	<rule ref="Universal">
+		<exclude name="Universal.PHP.RequireExitDieParentheses.Missing" />
+		<exclude name="Universal.Classes.RequireFinalClass.NonFinalClassFound" />
+		<exclude name="Universal.Files.SeparateFunctionsFromOO.Mixed" />
+	</rule>
 </ruleset>

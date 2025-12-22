@@ -4,8 +4,8 @@ parameters:
     level: max
     inferPrivatePropertyTypeFromConstructor: true
     paths:
-        - inc/
-        - src/
+        #- inc/
+        #- src/
         - plugin.php
     excludePaths:
         analyse:
@@ -13,10 +13,10 @@ parameters:
             # "/wp-content/" is created during composer install,
             # when package is tested
             # and not running within ft-platform
-            - wp-content/
-            - tests/
+            - wp-content/(?)
+            - tests/(?)
         analyseAndScan:
-            - build/
+            - build/(?)
             - node_modules/
     ignoreErrors:
         # Find a nicer way instead of ignoring this Error on every ft-module
