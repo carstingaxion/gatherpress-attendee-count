@@ -153,17 +153,17 @@ class Plugin {
 		}
 
 		wp_enqueue_style(
-			'gatherpress-attendee-count-dashboard',
-			plugins_url( 'assets/css/dashboard-widget.css', __FILE__ ),
+			'gatherpress-attendee-count',
+			plugins_url( 'assets/css/style.css', __FILE__ ),
 			array(),
-			filemtime( dirname( __DIR__ ) . '/assets/css/dashboard-widget.css' ),
+			filemtime( __DIR__ . '/assets/css/style.css' ),
 		);
 
 		wp_enqueue_script(
-			'gatherpress-attendee-count-dashboard',
-			plugins_url( 'assets/js/dashboard-widget.js', __FILE__ ),
+			'gatherpress-attendee-count',
+			plugins_url( 'assets/js/index.js', __FILE__ ),
 			array( 'jquery' ),
-			filemtime( dirname( __DIR__ ) . '/assets/js/dashboard-widget.js' ),
+			filemtime( __DIR__ . '/assets/js/index.js' ),
 			array( 
 				'in_footer' => true,
 				'strategy'  => 'defer',
@@ -171,11 +171,12 @@ class Plugin {
 		);
 
 		wp_localize_script(
-			'gatherpress-attendee-count-dashboard',
+			'gatherpress-attendee-count',
 			'gatherpressAttendeeCount',
 			array(
 				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
 				'nonce'   => wp_create_nonce( self::NONCE_ACTION ),
+				'canEdit' => current_user_can( 'edit_posts' ),
 			)
 		);
 	}
@@ -197,20 +198,18 @@ class Plugin {
 			return;
 		}
 
-		$can_edit = current_user_can( 'edit_posts' );
-
 		wp_enqueue_style(
-			'gatherpress-attendee-count-list-table',
-			plugins_url( 'assets/css/list-table.css', __FILE__ ),
+			'gatherpress-attendee-count',
+			plugins_url( 'assets/css/style.css', __FILE__ ),
 			array(),
-			filemtime( dirname( __DIR__ ) . '/assets/css/list-table.css' ),
+			filemtime( __DIR__ . '/assets/css/style.css' ),
 		);
 
 		wp_enqueue_script(
-			'gatherpress-attendee-count-list-table',
-			plugins_url( 'assets/js/list-table.js', __FILE__ ),
+			'gatherpress-attendee-count',
+			plugins_url( 'assets/js/index.js', __FILE__ ),
 			array( 'jquery' ),
-			filemtime( dirname( __DIR__ ) . '/assets/js/list-table.js' ),
+			filemtime( __DIR__ . '/assets/js/index.js' ),
 			array( 
 				'in_footer' => true,
 				'strategy'  => 'defer',
@@ -218,12 +217,12 @@ class Plugin {
 		);
 
 		wp_localize_script(
-			'gatherpress-attendee-count-list-table',
-			'gatherpressAttendeeCountListTable',
+			'gatherpress-attendee-count',
+			'gatherpressAttendeeCount',
 			array(
 				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
 				'nonce'   => wp_create_nonce( self::NONCE_ACTION ),
-				'canEdit' => $can_edit,
+				'canEdit' => current_user_can( 'edit_posts' ),
 			)
 		);
 	}
