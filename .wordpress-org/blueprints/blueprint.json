@@ -1,6 +1,6 @@
 {
   "$schema": "https://playground.wordpress.net/blueprint-schema.json",
-  "landingPage": "https://playground.wordpress.net/wp-admin/",
+  "landingPage": "/wp-admin/",
   "preferredVersions": {
     "php": "8.2",
     "wp": "latest"
@@ -30,9 +30,14 @@
     {
       "step": "updateUserMeta",
       "meta": {
-        "admin_color": "modern"
-      },
+        "admin_color": "modern",
+        "show_welcome_panel": 0
+    },
       "userId": 1
+    },
+    {
+      "step": "runPHP",
+      "code": "<?php require '/wordpress/wp-load.php'; update_user_meta( 1, 'metaboxhidden_dashboard', array( 'dashboard_right_now', 'dashboard_activity', 'dashboard_quick_press', 'dashboard_primary', 'dashboard_site_health' ) );"
     },
     {
       "step": "installPlugin",
