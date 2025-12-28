@@ -1,20 +1,21 @@
+/* global gatherpressAttendeeCount, jQuery */
 ( function ( $ ) {
 	'use strict';
 
 	$( document ).ready( function () {
-		// Configuration for different contexts 
+		// Configuration for different contexts
 		const contexts = {
-			dashboard: { 
-				selector: '#gatherpress_attendee_count_widget', 
-				features: { 
+			dashboard: {
+				selector: '#gatherpress_attendee_count_widget',
+				features: {
 					removeOnSave: true,
 					allowEmpty: false,
-					emptyMessage: 'All events have attendee count information!', 
+					emptyMessage: 'All events have attendee count information!',
 				},
 			},
-			listTable: { 
-				selector: '.column-gatherpress_attendee_count', 
-				features: { 
+			listTable: {
+				selector: '.column-gatherpress_attendee_count',
+				features: {
 					removeOnSave: false,
 					allowEmpty: true,
 					emptyMessage: null,
@@ -23,7 +24,7 @@
 		};
 
 		// Initialize both contexts
-		Object.values( contexts ).forEach( ( context ) => { 
+		Object.values( contexts ).forEach( ( context ) => {
 			initializeContext( context );
 		} );
 
@@ -33,113 +34,106 @@
 				return;
 			}
 
-			// Make attendee count clickable for inline editing 
-			$container.on( 
-				'click',
-				'.gatherpress-count-value', 
-				function ( e ) {
-					e.preventDefault(); 
+			// Make attendee count clickable for inline editing
+			$container.on( 'click', '.gatherpress-count-value', function ( e ) {
+				e.preventDefault();
 
-					// Check if user can edit
-					if ( ! gatherpressAttendeeCount.canEdit ) {
-						return;
-					}
-
-					const valueSpan = $( this );
-					const container = valueSpan.closest( 
-						'.gatherpress-count-container' 
-					);
-					const eventId = valueSpan.data( 'event-id' );
-					const currentValue = valueSpan.data( 'value' );
-
-					// Don't allow editing if already editing
-					if ( container.find( 'input' ).length ) {
-						return;
-					}
-
-					// Create input field
-					const input = $( '<input>' ) 
-						.attr( {
-							type: 'number', 
-							min: context.features.allowEmpty ? '0' : '1',
-							value:
-								currentValue === '—' ? '' : currentValue, 
-							placeholder: '0',
-						} )
-						.addClass( 'gatherpress-count-input' );
-
-					// Replace span with input 
-					valueSpan.replaceWith( input );
-					input.focus().select(); 
-
-					// Handle save on blur or enter 
-					input.on( 'blur keypress', function ( event ) {
-						if (
-							event.type === 'blur' ||
-							( event.type === 'keypress' && 
-								event.which === 13 )
-						) {
-							event.preventDefault(); 
-							saveValue( 
-								input,
-								eventId, 
-								currentValue, 
-								context 
-							);
-						}
-					} );
-
-					// Handle escape key
-					input.on( 'keydown', function ( event ) {
-						if ( event.which === 27 ) {
-							// Escape key
-							restoreValue( input, currentValue );
-						}
-					} );
+				// Check if user can edit
+				if ( ! gatherpressAttendeeCount.canEdit ) {
+					return;
 				}
-			);
+
+				const valueSpan = $( this );
+				const container = valueSpan.closest(
+					'.gatherpress-count-container'
+				);
+
+				// Don't allow editing if already editing
+				if ( container.find( 'input' ).length ) {
+					return;
+				}
+
+				// Create input field
+				const currentValue = valueSpan.data( 'value' );
+				const input = $( '<input>' )
+					.attr( {
+						type: 'number',
+						min: context.features.allowEmpty ? '0' : '1',
+						value: currentValue === '—' ? '' : currentValue,
+						placeholder: '0',
+					} )
+					.addClass( 'gatherpress-count-input' );
+
+				// Replace span with input
+				valueSpan.replaceWith( input );
+				input.focus().select();
+
+				const eventId = valueSpan.data( 'event-id' );
+
+				// Handle save on blur or enter
+				input.on( 'blur keypress', function ( event ) {
+					if (
+						event.type === 'blur' ||
+						( event.type === 'keypress' && event.which === 13 )
+					) {
+						event.preventDefault();
+						saveValue( input, eventId, currentValue, context );
+					}
+				} );
+
+				// Handle escape key
+				input.on( 'keydown', function ( event ) {
+					if ( event.which === 27 ) {
+						// Escape key
+						// restoreValue( input, currentValue );
+						restoreValue( input, eventId, currentValue );
+					}
+				} );
+			} );
 		}
 
 		function saveValue( input, eventId, currentValue, context ) {
-			const newValue = input.val().trim(); 
-			const container = input.closest( '.gatherpress-count-container' );
+			const newValue = input.val().trim();
 
-			// Convert currentValue to string for comparison, handling empty case 
+			// Convert currentValue to string for comparison, handling empty case
 			const currentValueStr =
-				currentValue === '—' ? '' : String( currentValue ); 
+				currentValue === '—' || undefined === currentValue
+					? ''
+					: String( currentValue );
 
-			// If value hasn't changed, just restore 
+			// If value hasn't changed, just restore
 			if (
 				newValue === currentValueStr ||
 				( newValue === '' && currentValueStr === '' )
 			) {
-				restoreValue( input, currentValue );
+				restoreValue( input, eventId, currentValueStr );
 				return;
 			}
 
-			// Don't allow saving 0 or empty in dashboard context 
+			// Don't allow saving 0 or empty in dashboard context
 			if (
 				! context.features.allowEmpty &&
 				( newValue === '' || newValue === '0' )
 			) {
-				restoreValue( input, currentValue );
+				restoreValue( input, eventId, currentValue );
 				return;
 			}
 
 			// Show saving state
+			const container = input.closest( '.gatherpress-count-container' );
 			container.addClass( 'gatherpress-saving' );
 
 			// Determine action based on new value
 			const action =
 				newValue === '' || newValue === '0'
-					? 'gatherpress_attendee_count_delete_attendee_count' 
-					: 'gatherpress_attendee_count_update_attendee_count'; 
+					? 'gatherpress_attendee_count_delete_attendee_count'
+					: 'gatherpress_attendee_count_update_attendee_count';
 
 			// Prepare AJAX data
 			const ajaxData = {
-				action: action, 
-				nonce: gatherpressAttendeeCount.nonce, 
-				event_id: eventId, 
+				action,
+				nonce: gatherpressAttendeeCount.nonce,
+				event_id: eventId,
 			};
 
 			if ( action.includes( 'update' ) ) {
@@ -148,10 +142,10 @@
 
 			// Send AJAX request
 			$.ajax( {
-				url: gatherpressAttendeeCount.ajaxUrl, 
-				type: 'POST', 
-				data: ajaxData, 
-				success: function ( response ) {
+				url: gatherpressAttendeeCount.ajaxUrl,
+				type: 'POST',
+				data: ajaxData,
+				success( response ) {
 					container.removeClass( 'gatherpress-saving' );
 
 					if ( response.success ) {
@@ -159,44 +153,40 @@
 						if ( context.features.removeOnSave ) {
 							const listItem = container.closest( 'li' );
 							listItem.fadeOut( 300, function () {
-								listItem.remove(); 
+								listItem.remove();
 
 								// Check if there are any items left
 								const activityBlock = $(
-									'#gatherpress-events-list' 
+									'#gatherpress-events-list'
 								);
 								if (
-									! activityBlock.find( 'li' ).length && 
-									context.features.emptyMessage 
+									! activityBlock.find( 'li' ).length &&
+									context.features.emptyMessage
 								) {
-									activityBlock 
+									activityBlock
 										.closest( '#activity-widget' )
-										.html( 
+										.html(
 											'<div class="no-activity"><p class="smiley" aria-hidden="true"></p><p>' +
-												context.features 
-													.emptyMessage +
-												'</p></div>' 
+												context.features.emptyMessage +
+												'</p></div>'
 										);
 								}
 							} );
 						} else {
-							// Handle list table context 
-							if (
-								newValue === '' ||
-								newValue === '0'
-							) {
+							// Handle list table context
+							if ( newValue === '' || newValue === '0' ) {
 								// Value was deleted - show empty state
 								const newSpan = $(
-									'<span class="button gatherpress-count-value gatherpress-empty">' 
+									'<span class="button gatherpress-count-value gatherpress-empty">'
 								)
 									.attr( 'data-event-id', eventId )
 									.attr( 'data-value', '—' )
 									.text( '—' );
 								input.replaceWith( newSpan );
-							} else { 
+							} else {
 								// Value was updated - show new value
 								const newSpan = $(
-									'<span class="button gatherpress-count-value">' 
+									'<span class="button gatherpress-count-value">'
 								)
 									.attr( 'data-event-id', eventId )
 									.attr( 'data-value', newValue )
@@ -207,37 +197,44 @@
 							// Flash the container
 							container.addClass( 'gatherpress-updated' );
 							setTimeout( function () {
-								container.removeClass( 
-									'gatherpress-updated' 
-								);
-							}, 500 ); 
+								container.removeClass( 'gatherpress-updated' );
+							}, 500 );
 						}
 					} else {
-						restoreValue( input, currentValue );
-						alert(
-							response.data.message ||
-								'Failed to update attendee count.'
-						);
+						restoreValue( input, eventId, currentValue );
+						wp.data
+							.dispatch( 'core/notices' )
+							.createNotice(
+								'error',
+								'Failed to update attendee count.',
+								{ isDismissible: true }
+							);
+						// alert(
+						// 	response.data.message ||
+						// 		'Failed to update attendee count.'
+						// );
 					}
 				},
-				error: function () {
+				error() {
 					container.removeClass( 'gatherpress-saving' );
-					restoreValue( input, currentValue );
-					alert( 'An error occurred. Please try again.' );
+					restoreValue( input, eventId, currentValue );
+					// alert( 'An error occurred. Please try again.' );
+					wp.data
+						.dispatch( 'core/notices' )
+						.createNotice(
+							'error',
+							'An error occurred. Please try again.',
+							{ isDismissible: true }
+						);
 				},
 			} );
 		}
 
-		function restoreValue( input, value ) { 
-			const eventId = input
-				.closest( '.gatherpress-count-container' )
-				.find( '.gatherpress-count-value' )
-				.data( 'event-id' );
-
-			let newSpan; 
+		function restoreValue( input, eventId, value ) {
+			let newSpan;
 			if ( value === '—' || value === '' ) {
-				newSpan = $( 
-					'<span class="button gatherpress-count-value gatherpress-empty">' 
+				newSpan = $(
+					'<span class="button gatherpress-count-value gatherpress-empty">'
 				)
 					.attr( 'data-event-id', eventId )
 					.attr( 'data-value', '—' )
@@ -248,7 +245,6 @@
 					.attr( 'data-value', value )
 					.html( '<span>' + value + '</span>' );
 			}
-
 			input.replaceWith( newSpan );
 		}
 	} );

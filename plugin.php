@@ -156,14 +156,14 @@ class Plugin {
 			'gatherpress-attendee-count',
 			plugins_url( 'assets/css/style.css', __FILE__ ),
 			array(),
-			filemtime( __DIR__ . '/assets/css/style.css' ),
+			(string) filemtime( __DIR__ . '/assets/css/style.css' ),
 		);
 
 		wp_enqueue_script(
 			'gatherpress-attendee-count',
 			plugins_url( 'assets/js/index.js', __FILE__ ),
 			array( 'jquery' ),
-			filemtime( __DIR__ . '/assets/js/index.js' ),
+			(string) filemtime( __DIR__ . '/assets/js/index.js' ),
 			array( 
 				'in_footer' => true,
 				'strategy'  => 'defer',
@@ -202,14 +202,14 @@ class Plugin {
 			'gatherpress-attendee-count',
 			plugins_url( 'assets/css/style.css', __FILE__ ),
 			array(),
-			filemtime( __DIR__ . '/assets/css/style.css' ),
+			(string) filemtime( __DIR__ . '/assets/css/style.css' ),
 		);
 
 		wp_enqueue_script(
 			'gatherpress-attendee-count',
 			plugins_url( 'assets/js/index.js', __FILE__ ),
 			array( 'jquery' ),
-			filemtime( __DIR__ . '/assets/js/index.js' ),
+			(string) filemtime( __DIR__ . '/assets/js/index.js' ),
 			array( 
 				'in_footer' => true,
 				'strategy'  => 'defer',
@@ -306,9 +306,9 @@ class Plugin {
 		$gatherpress_datetime = get_post_meta( $event_id, 'gatherpress_datetime_start', true );
 		
 		if ( ! empty( $gatherpress_datetime ) && is_string( $gatherpress_datetime ) ) {
-			$time = strtotime( $gatherpress_datetime );
+			$time = (int) strtotime( $gatherpress_datetime );
 		} else {
-			$time = get_the_date( 'U', $event_id );
+			$time = (int) get_the_date( 'U', $event_id );
 		}
 
 		if ( gmdate( 'Y-m-d', $time ) === $today ) {
@@ -359,12 +359,12 @@ class Plugin {
 
 			while ( $query->have_posts() ) {
 				$query->the_post();
-				$event_id   = get_the_ID();
-				$edit_link  = get_edit_post_link( $event_id );
+				$event_id   = (int) get_the_ID();
+				$edit_link  = get_edit_post_link() ? get_edit_post_link() : '#';
 				$event_date = $this->format_event_date( $event_id );
 				$venue_name = $this->get_event_venue( $event_id );
 
-				echo '<li class="gatherpress-event-item" data-event-id="' . esc_attr( $event_id ) . '">';
+				echo '<li class="gatherpress-event-item" data-event-id="' . esc_attr( (string) $event_id ) . '">';
 				echo '<span class="gatherpress-event-date">' . esc_html( $event_date ) . '</span>';
 				echo '<div class="gatherpress-event-info">';
 				echo '<span class="gatherpress-event-title">';
@@ -376,7 +376,7 @@ class Plugin {
 				}
 				
 				echo '<div class="gatherpress-count-container">';
-				echo '<span class="button gatherpress-count-value" data-event-id="' . esc_attr( $event_id ) . '">—</span>';
+				echo '<span class="button gatherpress-count-value" data-event-id="' . esc_attr( (string) $event_id ) . '">—</span>';
 				echo '</div>';
 				echo '</div>';
 				echo '</li>';
@@ -434,14 +434,14 @@ class Plugin {
 		
 		echo '<div class="gatherpress-count-container">';
 		
-		if ( '' !== $attendee_count && null !== $attendee_count ) {
+		if ( ! empty( $attendee_count ) && is_string( $attendee_count ) && is_numeric( $attendee_count ) ) {
 			if ( $can_edit ) {
-				echo '<span class="button gatherpress-count-value" data-event-id="' . esc_attr( $post_id ) . '" data-value="' . esc_attr( $attendee_count ) . '"><span>' . esc_html( $attendee_count ) . '</span></span>';
+				echo '<span class="button gatherpress-count-value" data-event-id="' . esc_attr( (string) $post_id ) . '" data-value="' . esc_attr( $attendee_count ) . '"><span>' . esc_html( $attendee_count ) . '</span></span>';
 			} else {
 				echo '<span><span>' . esc_html( $attendee_count ) . '</span></span>';
 			}
 		} elseif ( $can_edit ) {
-			echo '<span class="button gatherpress-count-value gatherpress-empty" data-event-id="' . esc_attr( $post_id ) . '" data-value="—">—</span>';
+			echo '<span class="button gatherpress-count-value gatherpress-empty" data-event-id="' . esc_attr( (string) $post_id ) . '" data-value="—">—</span>';
 		} else {
 			echo '<span style="color: #d63638;">—</span>';
 		}
@@ -466,8 +466,8 @@ class Plugin {
 			);
 		}
 
-		$event_id       = isset( $_POST['event_id'] ) ? intval( $_POST['event_id'] ) : 0;
-		$attendee_count = isset( $_POST['attendee_count'] ) ? intval( $_POST['attendee_count'] ) : 0;
+		$event_id       = isset( $_POST['event_id'] ) && is_numeric( $_POST['event_id'] ) ? intval( $_POST['event_id'] ) : 0;
+		$attendee_count = isset( $_POST['attendee_count'] ) && is_numeric( $_POST['attendee_count'] ) ? intval( $_POST['attendee_count'] ) : 0;
 
 		if ( ! $event_id ) {
 			wp_send_json_error(
@@ -522,7 +522,7 @@ class Plugin {
 			);
 		}
 
-		$event_id = isset( $_POST['event_id'] ) ? intval( $_POST['event_id'] ) : 0;
+		$event_id = isset( $_POST['event_id'] ) && is_numeric( $_POST['event_id'] ) ? intval( $_POST['event_id'] ) : 0;
 
 		if ( ! $event_id ) {
 			wp_send_json_error(

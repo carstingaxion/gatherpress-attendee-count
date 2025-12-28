@@ -5,6 +5,9 @@
 	<file>.</file>
 	<arg name="basepath" value="./"/><!-- Strip the file paths down to the relevant bit -->
 
+	<exclude-pattern>*/build/*</exclude-pattern>
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+
 	<!-- Rules: figuren.theater Coding Standards -->
 	<rule ref="figurentheater" />
 	<!-- Allow additional text_domains -->
@@ -30,6 +33,7 @@
 		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
 	</rule>
 	<rule ref="Universal">
+		<exclude name="Universal.Namespaces.EnforceCurlyBraceSyntax.Forbidden" />
 		<exclude name="Universal.PHP.RequireExitDieParentheses.Missing" />
 		<exclude name="Universal.Classes.RequireFinalClass.NonFinalClassFound" />
 		<exclude name="Universal.Files.SeparateFunctionsFromOO.Mixed" />
