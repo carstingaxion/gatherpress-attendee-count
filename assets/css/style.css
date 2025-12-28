@@ -131,14 +131,13 @@
 	}
 
 	.gatherpress-count-value {
-
 		color: #d63638;
 		font-style: italic;
+	}
 
-		&:not(:hover) {
-			background: transparent;
-			border-color: transparent;
-		}
+	.gatherpress-count-value:not(:hover) {
+		background: transparent;
+		border-color: transparent;
 	}
 
 	.no-activity {
