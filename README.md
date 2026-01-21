@@ -64,6 +64,4 @@ No, the plugin provides only an admin dashboard widget and a custom column on th
 
 ## Changelog
 
-### 0.1.0
-- Initial release  
-- Admin dashboard widget for monitoring GatherPress events
+All notable changes to this project will be documented in the [CHANGELOG.md](CHANGELOG.md).
