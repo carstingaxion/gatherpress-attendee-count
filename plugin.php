@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       GatherPress Attendee Count
  * Description:       Monitor GatherPress events with missing attendee counts directly from your WordPress dashboard.
- * Version:           0.1.0
+ * Version:           0.2.0
  * Requires at least: 6.1
  * Requires PHP:      7.4
  * Requires Plugins:  gatherpress

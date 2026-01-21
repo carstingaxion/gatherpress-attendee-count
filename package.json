@@ -1,6 +1,6 @@
 {
     "name": "block-gatherpress-attendee-count",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "Display GatherPress events with missing attendee counts",
     "author": "telex block authoring tool",
     "license": "GPL-2.0-or-later",
