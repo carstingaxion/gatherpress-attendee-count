@@ -403,6 +403,15 @@ class Plugin {
 	 * @return array<string, string> Modified columns.
 	 */
 	public function add_attendee_count_column( array $columns ): array {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$current_view = isset( $_GET['gatherpress_event_query'] ) && is_string( $_GET['gatherpress_event_query'] )
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			? sanitize_text_field( wp_unslash( $_GET['gatherpress_event_query'] ) )
+			: '';
+
+		if ( 'upcoming' === $current_view ) {
+			return $columns;
+		}
 		$new_columns = array();
 		
 		foreach ( $columns as $key => $value ) {
