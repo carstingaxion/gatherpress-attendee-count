@@ -2,7 +2,7 @@
 
 **Contributors:** carstenbach & WordPress Telex  
 **Tags:** block, gatherpress, events, dashboard  
-**Tested up to:** 6.8  
+**Tested up to:** 7.1  
 **Stable tag:** 0.2.1  
 **License:** GPLv2 or later  
 **License URI:** https://www.gnu.org/licenses/gpl-2.0.html
