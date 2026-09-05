@@ -404,7 +404,7 @@ class Plugin {
 	 */
 	public function add_attendee_count_column( array $columns ): array {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$current_view = isset( $_GET['gatherpress_event_query'] )
+		$current_view = isset( $_GET['gatherpress_event_query'] ) && is_string( $_GET['gatherpress_event_query'] )
 			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			? sanitize_text_field( wp_unslash( $_GET['gatherpress_event_query'] ) )
 			: '';
