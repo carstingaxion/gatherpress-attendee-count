@@ -16,6 +16,7 @@
 
 namespace GatherPress\AttendeeCount;
 
+use WP_Post;
 use WP_Query;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -124,6 +125,10 @@ class Plugin {
 		// AJAX handlers.
 		add_action( 'wp_ajax_gatherpress_attendee_count_update_attendee_count', array( $this, 'ajax_update_attendee_count' ) );
 		add_action( 'wp_ajax_gatherpress_attendee_count_delete_attendee_count', array( $this, 'ajax_delete_attendee_count' ) );
+
+		// Invalidate cached counts when event-date posts change status
+		// (publish, trash, untrash, future → publish, etc.).
+		add_action( 'transition_post_status', array( $this, 'invalidate_on_post_change' ), 10, 3 );
 	}
 
 	/**
@@ -289,6 +294,43 @@ class Plugin {
 	 */
 	private function clear_events_cache(): void {
 		delete_transient( self::TRANSIENT_KEY );
+	}
+
+	/**
+	 * Invalidate attendee count cache when a post changes status.
+	 *
+	 * Fires on `transition_post_status`. Only acts when the post type
+	 * declares `gatherpress-event-date` support,
+	 * so unrelated post types are ignored at minimal cost.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param string  $new_status New post status.
+	 * @param string  $old_status Old post status.
+	 * @param WP_Post $post       Post object.
+	 * @return void
+	 */
+	public function invalidate_on_post_change( string $new_status, string $old_status, WP_Post $post ): void {
+		$is_update = ( $new_status === $old_status) ? true : false;
+		if ( ! in_array( 'publish', array($new_status, $old_status) ) && ! $is_update ) {
+			return;
+		}
+
+		if ( ! post_type_supports( $post->post_type, 'gatherpress-event-date' ) ) {
+			return;
+		}
+
+		$event = new \GatherPress\Core\Event( $post->ID );
+		if ( ! $event->has_event_past() ) {
+			return;
+		}
+
+		$attendee_count = get_post_meta( $post->ID, self::META_KEY, true );
+		if ( is_numeric( $attendee_count ) && (int) $attendee_count > 0 ) {
+			return;
+		}
+
+		$this->clear_events_cache();
 	}
 
 	/**
