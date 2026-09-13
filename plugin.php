@@ -311,8 +311,8 @@ class Plugin {
 	 * @return void
 	 */
 	public function invalidate_on_post_change( string $new_status, string $old_status, WP_Post $post ): void {
-		$is_update = ( $new_status === $old_status) ? true : false;
-		if ( ! in_array( 'publish', array($new_status, $old_status) ) && ! $is_update ) {
+		$is_update = ( $new_status === $old_status ) ? true : false;
+		if ( ! in_array( 'publish', array( $new_status, $old_status ), true ) && ! $is_update ) {
 			return;
 		}
 
