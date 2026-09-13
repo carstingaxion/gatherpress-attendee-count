@@ -39,12 +39,12 @@
     "config": {
         "allow-plugins": {
             "composer/installers": true,
-            "koodimonni/composer-dropin-installer": true,
-            "figuren-theater/altis-core": true,
-            "phpstan/extension-installer": true,
-            "ergebnis/composer-normalize": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
-            "figuren-theater/ft-core": true
+            "ergebnis/composer-normalize": true,
+            "figuren-theater/altis-core": true,
+            "figuren-theater/ft-core": true,
+            "koodimonni/composer-dropin-installer": true,
+            "phpstan/extension-installer": true
         },
         "sort-packages": true
     },
