@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased](https://github.com/carstingaxion/gatherpress-attendee-count/compare/0.5.0...HEAD)
+## [Unreleased](https://github.com/carstingaxion/gatherpress-attendee-count/compare/0.5.1...HEAD)
+
+## [0.5.1](https://github.com/carstingaxion/gatherpress-attendee-count/compare/0.5.0...0.5.1) - 2026-09-13
+
+### 🐛 Fixed
+
+- Use the gatherpress ORDERBY string "datetime" ([#36](https://github.com/carstingaxion/gatherpress-attendee-count/pull/36))
 
 ## [0.5.0](https://github.com/carstingaxion/gatherpress-attendee-count/compare/0.4.0...0.5.0) - 2026-09-13
 
