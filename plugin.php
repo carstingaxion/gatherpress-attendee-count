@@ -256,7 +256,7 @@ class Plugin {
 			'gatherpress_event_query' => 'past',
 			'posts_per_page'          => 100,
 			'post_status'             => array( 'publish' ),
-			'orderby'                 => 'event_date',
+			'orderby'                 => 'datetime',
 			'order'                   => 'DESC',
 			'meta_query'              => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 				'relation' => 'AND',
