@@ -130,6 +130,8 @@ class Plugin {
 		// Invalidate cached counts when event-date posts change status
 		// (publish, trash, untrash, future → publish, etc.).
 		add_action( 'transition_post_status', array( $this, 'invalidate_on_post_change' ), 10, 3 );
+		// Invalidate cached counts when an event ends.
+		add_action( 'gatherpress_event_ended', array( $this, 'handle_event_ended' ) );
 	}
 
 	/**
@@ -304,7 +306,7 @@ class Plugin {
 	 * declares `gatherpress-event-date` support,
 	 * so unrelated post types are ignored at minimal cost.
 	 *
-	 * @since 0.1.0
+	 * @since 0.1.1
 	 *
 	 * @param string  $new_status New post status.
 	 * @param string  $old_status Old post status.
@@ -327,6 +329,31 @@ class Plugin {
 		}
 
 		$attendee_count = get_post_meta( $post->ID, self::META_KEY, true );
+		if ( is_numeric( $attendee_count ) && (int) $attendee_count > 0 ) {
+			return;
+		}
+
+		$this->clear_events_cache();
+	}
+
+	/**
+	 * Handle event ended action.
+	 *
+	 * Fires when an event ends. If the event has no attendee count,
+	 * the transient cache is cleared to ensure fresh data on next request.
+	 * 
+	 * Provided by the `gatherpress_event_ended` action in GatherPressCacheInvalidationHooks plugin.
+	 *
+	 * @see https://github.com/carstingaxion/gatherpress-cache-invalidation-hooks/blob/main/docs/developer/hooks/gatherpress_event_ended.md
+	 *
+	 * @since 0.1.2
+	 *
+	 * @param int $event_id Event post ID of an ended event.
+	 * @return void
+	 */
+	public function handle_event_ended( int $event_id ): void {
+
+		$attendee_count = get_post_meta( $event_id, self::META_KEY, true );
 		if ( is_numeric( $attendee_count ) && (int) $attendee_count > 0 ) {
 			return;
 		}
