@@ -1,6 +1,6 @@
 {
     "name": "gatherpress-attendee-count",
-    "version": "0.3.0",
+    "version": "0.4.0",
     "description": "Display GatherPress events with missing attendee counts",
     "author": "Carsten Bach & WordPress Telex",
     "license": "GPL-2.0-or-later",
