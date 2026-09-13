@@ -16,6 +16,7 @@
 
 namespace GatherPress\AttendeeCount;
 
+use GatherPress\Core\Event\Event;
 use WP_Post;
 use WP_Query;
 
@@ -320,7 +321,7 @@ class Plugin {
 			return;
 		}
 
-		$event = new \GatherPress\Core\Event( $post->ID );
+		$event = new Event( $post->ID );
 		if ( ! $event->has_event_past() ) {
 			return;
 		}
