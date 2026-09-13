@@ -53,6 +53,16 @@
       "step": "installPlugin",
       "pluginData": {
           "resource": "url",
+          "url": "https://github.com/carstingaxion/gatherpress-cache-invalidation-hooks/releases/latest/download/gatherpress-cache-invalidation-hooks.zip"
+      },
+      "options": {
+          "activate": true
+      }
+    },
+    {
+      "step": "installPlugin",
+      "pluginData": {
+          "resource": "url",
           "url": "https://github.com/carstingaxion/gatherpress-attendee-count/releases/latest/download/gatherpress-attendee-count.zip"
       },
       "options": {
