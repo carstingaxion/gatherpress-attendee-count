@@ -2,7 +2,7 @@
   "$schema": "https://playground.wordpress.net/blueprint-schema.json",
   "landingPage": "/wp-admin/",
   "preferredVersions": {
-    "php": "8.2",
+    "php": "8.4",
     "wp": "latest"
   },
   "features": {
@@ -52,22 +52,18 @@
     {
       "step": "installPlugin",
       "pluginData": {
-        "resource": "git:directory",
-        "url": "https://github.com/carstingaxion/gatherpress-attendee-count",
-        "ref": "HEAD"
+          "resource": "url",
+          "url": "https://github.com/carstingaxion/gatherpress-attendee-count/releases/latest/download/gatherpress-attendee-count.zip"
       },
       "options": {
-        "activate": true
-      },
-      "progress": {
-        "caption": "Installing plugin from GitHub: carstingaxion/gatherpress-attendee-count"
+          "activate": true
       }
     },
     {
       "step": "importWxr",
       "file": {
         "resource": "url",
-        "url": "https://raw.githubusercontent.com/GatherPress/gatherpress-demo-data/main/GatherPress-demo-data-0.33.0.xml"
+        "url": "https://raw.githubusercontent.com/GatherPress/gatherpress-demo-data/main/GatherPress-demo-data-0.35.0.xml"
       }
     }
   ]
