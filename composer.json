@@ -28,7 +28,7 @@
     },
     "require-dev": {
         "figuren-theater/code-quality": "*",
-        "wpackagist-plugin/gatherpress": "^0.35.3"
+        "wpackagist-plugin/gatherpress": "^0.35.4"
     },
     "repositories": [
         {
